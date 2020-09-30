@@ -10,3 +10,16 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 .idea/
+
+**/mvnw
+**/mvnw.cmd
+**/**.iml
+**/HELP.md
+**/.mvn/
+**/target/
+**/.gitignore
+
+renren-fast/
+renren-generator/
+
+**/src/main/resources/src/views/modules/

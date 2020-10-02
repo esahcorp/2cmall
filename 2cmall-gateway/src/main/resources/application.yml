@@ -15,5 +15,30 @@ spring:
           uri: https://www.baidu.com
           predicates:
             - Query=url, baidu
+        # 精确的路由规则应该位于上方
+        - id: product_toute
+          uri: lb://2cmall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+
+        - id: admin_route
+          uri: lb://renren-fast
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /renren-fast/$\{segment}
+
+      # Cors 配置
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+
 server:
   port: 88

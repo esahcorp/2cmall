@@ -19,7 +19,6 @@ buildNumber.properties
 **/target/
 **/.gitignore
 
-renren-fast/
 renren-generator/
 
 **/src/main/resources/src/views/modules/

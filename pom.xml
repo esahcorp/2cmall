@@ -28,6 +28,7 @@
 		<module>2cmall-ware</module>
 		<module>2cmall-common</module>
 		<module>2cmall-gateway</module>
+		<module>renren-fast</module>
 	</modules>
 
 	<dependencyManagement>

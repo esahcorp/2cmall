@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: 2cmall-product
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: 2cmall-product-namespace
+        group: dev

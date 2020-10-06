@@ -42,6 +42,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void removeCategoryByIds(List<Long> ids) {
+        // TODO: (kuma, 2020/10/3, [2020/10/3]) 删除前校验
+        baseMapper.deleteBatchIds(ids);
+    }
+
     private List<CategoryEntity> getChildren(CategoryEntity root, List<CategoryEntity> all) {
         return all.stream().filter(categoryEntity -> categoryEntity.getParentCid().equals(root.getCatId()))
                 .map(categoryEntity -> {

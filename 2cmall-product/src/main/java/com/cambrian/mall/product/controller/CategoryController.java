@@ -67,6 +67,15 @@ public class CategoryController {
     }
 
     /**
+     * 批量修改
+     */
+    @RequestMapping("/update/batch")
+    public R update(@RequestBody List<CategoryEntity> categories){
+        categoryService.updateBatchById(categories);
+        return R.ok();
+    }
+
+    /**
      * 修改
      */
     @RequestMapping("/update")
@@ -82,8 +91,7 @@ public class CategoryController {
     @RequestMapping("/delete")
     // @RequiresPermissions("product:category:delete")
     public R delete(@RequestBody Long[] catIds){
-		categoryService.removeByIds(Arrays.asList(catIds));
-
+        categoryService.removeCategoryByIds(Arrays.asList(catIds));
         return R.ok();
     }
 

@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: 2cmall-third-party
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: 2cmall-third-party-namespace
+        ext-config:
+          - dataId: oss.yml
+            group: dev
+            refresh: true

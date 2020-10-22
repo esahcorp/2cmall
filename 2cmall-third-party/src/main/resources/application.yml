@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: 2cmall-third-party
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    alicloud:
+      oss:
+        bucket: 2cmall
+server:
+  port: 30000

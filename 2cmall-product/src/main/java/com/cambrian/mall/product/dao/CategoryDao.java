@@ -1,7 +1,7 @@
 package com.cambrian.mall.product.dao;
 
-import com.cambrian.mall.product.entity.CategoryEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.cambrian.mall.product.entity.CategoryEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

@@ -8,14 +8,20 @@ import com.cambrian.common.utils.Query;
 import com.cambrian.mall.product.dao.BrandDao;
 import com.cambrian.mall.product.entity.BrandEntity;
 import com.cambrian.mall.product.service.BrandService;
+import com.cambrian.mall.product.service.CategoryBrandRelationService;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 
 @Service("brandService")
 public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> implements BrandService {
+
+    @Autowired
+    private CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -30,6 +36,15 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
         );
 
         return new PageUtils(page);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateCascade(BrandEntity brand) {
+        this.updateById(brand);
+        if (StringUtils.isNotEmpty(brand.getName())) {
+            categoryBrandRelationService.updateBrand(brand.getBrandId(), brand.getName());
+        }
     }
 
 }

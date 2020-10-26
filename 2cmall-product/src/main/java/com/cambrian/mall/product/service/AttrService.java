@@ -3,6 +3,8 @@ package com.cambrian.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.mall.product.entity.AttrEntity;
+import com.cambrian.mall.product.vo.AttrRespVO;
+import com.cambrian.mall.product.vo.AttrVO;
 
 import java.util.Map;
 
@@ -16,5 +18,13 @@ import java.util.Map;
 public interface AttrService extends IService<AttrEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    PageUtils queryPageByCategory(Long categoryId, Map<String, Object> params);
+
+    void saveAttr(AttrVO attr);
+
+    AttrRespVO getAttrInfo(Long attrId);
+
+    void updateAttr(AttrVO attr);
 }
 

@@ -2,10 +2,9 @@ package com.cambrian.mall.product.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
-import lombok.Data;
 
 /**
  * 商品属性
@@ -36,6 +35,11 @@ public class AttrEntity implements Serializable {
 	 * 属性图标
 	 */
 	private String icon;
+
+	/**
+	 * 指类型，是否允许多个值
+	 */
+	private Integer valueType;
 	/**
 	 * 可选值列表[用逗号分隔]
 	 */

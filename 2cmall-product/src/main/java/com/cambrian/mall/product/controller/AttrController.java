@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.Map;
 
 
-
 /**
  * 商品属性
  *
@@ -31,16 +30,18 @@ public class AttrController {
      */
     @RequestMapping("/list")
     // @RequiresPermissions("product:attr:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = attrService.queryPage(params);
 
         return R.ok().put("page", page);
     }
 
-    @GetMapping("/base/list/{catelogId}")
+    @GetMapping("/{attrType}/list/{catelogId}")
     // @RequiresPermissions("product:attr:list")
-    public R listByCategory(@PathVariable("catelogId") Long categoryId, @RequestParam Map<String, Object> params){
-        PageUtils page = attrService.queryPageByCategory(categoryId, params);
+    public R listAttrByCategory(@PathVariable("attrType") String attrType,
+                                    @PathVariable("catelogId") Long categoryId,
+                                    @RequestParam Map<String, Object> params) {
+        PageUtils page = attrService.queryPageByCategory(attrType, categoryId, params);
 
         return R.ok().put("page", page);
     }
@@ -51,8 +52,8 @@ public class AttrController {
      */
     @RequestMapping("/info/{attrId}")
     // @RequiresPermissions("product:attr:info")
-    public R info(@PathVariable("attrId") Long attrId){
-		AttrRespVO attr = attrService.getAttrInfo(attrId);
+    public R info(@PathVariable("attrId") Long attrId) {
+        AttrRespVO attr = attrService.getAttrInfo(attrId);
 
         return R.ok().put("attr", attr);
     }
@@ -62,8 +63,8 @@ public class AttrController {
      */
     @RequestMapping("/save")
     // @RequiresPermissions("product:attr:save")
-    public R save(@RequestBody AttrVO attr){
-		attrService.saveAttr(attr);
+    public R save(@RequestBody AttrVO attr) {
+        attrService.saveAttr(attr);
 
         return R.ok();
     }
@@ -72,8 +73,8 @@ public class AttrController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody AttrVO attr){
-		attrService.updateAttr(attr);
+    public R update(@RequestBody AttrVO attr) {
+        attrService.updateAttr(attr);
 
         return R.ok();
     }
@@ -83,8 +84,8 @@ public class AttrController {
      */
     @RequestMapping("/delete")
     // @RequiresPermissions("product:attr:delete")
-    public R delete(@RequestBody Long[] attrIds){
-		attrService.removeByIds(Arrays.asList(attrIds));
+    public R delete(@RequestBody Long[] attrIds) {
+        attrService.removeByIds(Arrays.asList(attrIds));
 
         return R.ok();
     }

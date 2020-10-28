@@ -5,17 +5,28 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.common.utils.Query;
+import com.cambrian.mall.product.dao.AttrAttrgroupRelationDao;
 import com.cambrian.mall.product.dao.AttrGroupDao;
+import com.cambrian.mall.product.entity.AttrAttrgroupRelationEntity;
 import com.cambrian.mall.product.entity.AttrGroupEntity;
 import com.cambrian.mall.product.service.AttrGroupService;
+import com.cambrian.mall.product.vo.AttrRelationVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service("attrGroupService")
 public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEntity> implements AttrGroupService {
+
+    private AttrAttrgroupRelationDao relationDao;
+
+    public AttrGroupServiceImpl(AttrAttrgroupRelationDao relationDao) {
+        this.relationDao = relationDao;
+    }
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -44,6 +55,17 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public void removeRelationBatch(List<AttrRelationVO> relations) {
+        List<AttrAttrgroupRelationEntity> entities = relations.stream().map(vo -> {
+            AttrAttrgroupRelationEntity entity = new AttrAttrgroupRelationEntity();
+            entity.setAttrId(vo.getAttrId());
+            entity.setAttrGroupId(vo.getAttrGroupId());
+            return entity;
+        }).collect(Collectors.toList());
+        relationDao.deleteBatch(entities);
     }
 
 }

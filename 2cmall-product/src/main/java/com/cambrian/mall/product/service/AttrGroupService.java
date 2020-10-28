@@ -3,7 +3,9 @@ package com.cambrian.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.mall.product.entity.AttrGroupEntity;
+import com.cambrian.mall.product.vo.AttrRelationVO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,5 +20,7 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     PageUtils queryPage(Long categoryId, Map<String, Object> params);
+
+    void removeRelationBatch(List<AttrRelationVO> relations);
 }
 

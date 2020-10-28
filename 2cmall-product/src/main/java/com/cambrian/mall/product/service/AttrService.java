@@ -6,6 +6,7 @@ import com.cambrian.mall.product.entity.AttrEntity;
 import com.cambrian.mall.product.vo.AttrRespVO;
 import com.cambrian.mall.product.vo.AttrVO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,5 +28,15 @@ public interface AttrService extends IService<AttrEntity> {
 
     void updateAttr(AttrVO attr);
 
+    List<AttrEntity> listRelationAttrByGroup(Long attrGroupId);
+
+    /**
+     * 获取当前分组没有关联的同分类属性
+     *
+     * @param attrGroupId 属性分组 id
+     * @param params 参数
+     * @return 分页列表
+     */
+    PageUtils listNotRelatedAttrViaCategory(Long attrGroupId, Map<String, Object> params);
 }
 

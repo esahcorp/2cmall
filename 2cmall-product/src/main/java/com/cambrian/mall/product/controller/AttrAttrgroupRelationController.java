@@ -1,19 +1,14 @@
 package com.cambrian.mall.product.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.cambrian.mall.product.entity.AttrAttrgroupRelationEntity;
-import com.cambrian.mall.product.service.AttrAttrgroupRelationService;
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.common.utils.R;
+import com.cambrian.mall.product.entity.AttrAttrgroupRelationEntity;
+import com.cambrian.mall.product.service.AttrAttrgroupRelationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Map;
 
 
 
@@ -27,6 +22,7 @@ import com.cambrian.common.utils.R;
 @RestController
 @RequestMapping("product/attrattrgrouprelation")
 public class AttrAttrgroupRelationController {
+
     @Autowired
     private AttrAttrgroupRelationService attrAttrgroupRelationService;
 

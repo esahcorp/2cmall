@@ -2,13 +2,18 @@ package com.cambrian.mall.product.controller;
 
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.common.utils.R;
+import com.cambrian.mall.product.entity.AttrEntity;
 import com.cambrian.mall.product.entity.AttrGroupEntity;
+import com.cambrian.mall.product.service.AttrAttrgroupRelationService;
 import com.cambrian.mall.product.service.AttrGroupService;
+import com.cambrian.mall.product.service.AttrService;
 import com.cambrian.mall.product.service.CategoryService;
+import com.cambrian.mall.product.vo.AttrRelationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -28,6 +33,31 @@ public class AttrGroupController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private AttrService attrService;
+
+    @Autowired
+    private AttrAttrgroupRelationService relationService;
+
+
+    @GetMapping("/{attrgroupId}/attr/relation")
+    public R listRelationAttrByGroup(@PathVariable("attrgroupId") Long attrGroupId) {
+        List<AttrEntity> attrList = attrService.listRelationAttrByGroup(attrGroupId);
+        return R.ok().put("data", attrList);
+    }
+
+    @GetMapping("/{attrgroupId}/noattr/relation")
+    public R listNoRelatedAttr(@PathVariable("attrgroupId") Long attrGroupId, @RequestParam Map<String, Object> params) {
+        PageUtils page = attrService.listNotRelatedAttrViaCategory(attrGroupId, params);
+        return R.ok().put("page", page);
+    }
+
+    @PostMapping("/attr/relation")
+    public R addRelation(@RequestBody List<AttrRelationVO> vos) {
+        relationService.saveRelations(vos);
+        return R.ok();
+    }
 
     /**
      * 列表
@@ -83,6 +113,12 @@ public class AttrGroupController {
     public R delete(@RequestBody Long[] attrGroupIds){
 		attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
 
+        return R.ok();
+    }
+
+    @PostMapping("/attr/relation/delete")
+    public R deleteAttrRelation(@RequestBody List<AttrRelationVO> relations) {
+        attrGroupService.removeRelationBatch(relations);
         return R.ok();
     }
 

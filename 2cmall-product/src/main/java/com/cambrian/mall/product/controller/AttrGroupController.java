@@ -8,6 +8,7 @@ import com.cambrian.mall.product.service.AttrAttrgroupRelationService;
 import com.cambrian.mall.product.service.AttrGroupService;
 import com.cambrian.mall.product.service.AttrService;
 import com.cambrian.mall.product.service.CategoryService;
+import com.cambrian.mall.product.vo.AttrGroupWithAttrVO;
 import com.cambrian.mall.product.vo.AttrRelationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,11 @@ public class AttrGroupController {
     @Autowired
     private AttrAttrgroupRelationService relationService;
 
+    @GetMapping("/{catelogId}/withattr")
+    public R listGroupWithAttrViaCategory(@PathVariable("catelogId") Long catalogId) {
+        List<AttrGroupWithAttrVO> vos = attrGroupService.listGroupWithAttrByCatalogId(catalogId);
+        return R.ok().put("data", vos);
+    }
 
     @GetMapping("/{attrgroupId}/attr/relation")
     public R listRelationAttrByGroup(@PathVariable("attrgroupId") Long attrGroupId) {

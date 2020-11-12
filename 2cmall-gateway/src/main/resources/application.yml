@@ -7,14 +7,6 @@ spring:
         server-addr: 127.0.0.1:8848
     gateway:
       routes:
-        - id: query_qq
-          uri: https://www.qq.com
-          predicates:
-            - Query=url, qq
-        - id: query_baidu
-          uri: https://www.baidu.com
-          predicates:
-            - Query=url, baidu
         # 精确的路由规则应该位于上方
         - id: product_route
           uri: lb://2cmall-product
@@ -29,6 +21,13 @@ spring:
             - Path=/api/thirdparty/**
           filters:
             - RewritePath=/api/thirdparty/(?<segment>.*), /$\{segment}
+
+        - id: member_route
+          uri: lb://2cmall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
 
         - id: admin_route
           uri: lb://renren-fast

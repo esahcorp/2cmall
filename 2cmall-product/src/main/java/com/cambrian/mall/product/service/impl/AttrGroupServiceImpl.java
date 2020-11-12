@@ -8,10 +8,14 @@ import com.cambrian.common.utils.Query;
 import com.cambrian.mall.product.dao.AttrAttrgroupRelationDao;
 import com.cambrian.mall.product.dao.AttrGroupDao;
 import com.cambrian.mall.product.entity.AttrAttrgroupRelationEntity;
+import com.cambrian.mall.product.entity.AttrEntity;
 import com.cambrian.mall.product.entity.AttrGroupEntity;
 import com.cambrian.mall.product.service.AttrGroupService;
+import com.cambrian.mall.product.service.AttrService;
+import com.cambrian.mall.product.vo.AttrGroupWithAttrVO;
 import com.cambrian.mall.product.vo.AttrRelationVO;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +28,11 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
 
     private AttrAttrgroupRelationDao relationDao;
 
-    public AttrGroupServiceImpl(AttrAttrgroupRelationDao relationDao) {
+    private AttrService attrService;
+
+    public AttrGroupServiceImpl(AttrAttrgroupRelationDao relationDao, AttrService attrService) {
         this.relationDao = relationDao;
+        this.attrService = attrService;
     }
 
     @Override
@@ -66,6 +73,20 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
             return entity;
         }).collect(Collectors.toList());
         relationDao.deleteBatch(entities);
+    }
+
+    @Override
+    public List<AttrGroupWithAttrVO> listGroupWithAttrByCatalogId(Long catalogId) {
+        List<AttrGroupEntity> groupEntities
+                = this.list(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catalogId));
+        return groupEntities.stream().map(group -> {
+            AttrGroupWithAttrVO groupWithAttrVO = new AttrGroupWithAttrVO();
+            BeanUtils.copyProperties(group, groupWithAttrVO);
+
+            List<AttrEntity> attrEntities = attrService.listRelationAttrByGroup(group.getAttrGroupId());
+            groupWithAttrVO.setAttrs(attrEntities);
+            return groupWithAttrVO;
+        }).collect(Collectors.toList());
     }
 
 }

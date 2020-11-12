@@ -1,16 +1,16 @@
 package com.cambrian.mall.product.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.common.utils.Query;
-
 import com.cambrian.mall.product.dao.SpuInfoDescDao;
 import com.cambrian.mall.product.entity.SpuInfoDescEntity;
 import com.cambrian.mall.product.service.SpuInfoDescService;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 
 @Service("spuInfoDescService")
@@ -24,6 +24,11 @@ public class SpuInfoDescServiceImpl extends ServiceImpl<SpuInfoDescDao, SpuInfoD
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public void saveSpuDesc(SpuInfoDescEntity spuInfoDescEntity) {
+        this.baseMapper.insert(spuInfoDescEntity);
     }
 
 }

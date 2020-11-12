@@ -1,6 +1,7 @@
 package com.cambrian.mall.coupon.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cambrian.common.to.SkuReductionTO;
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.mall.coupon.entity.SkuFullReductionEntity;
 
@@ -16,5 +17,7 @@ import java.util.Map;
 public interface SkuFullReductionService extends IService<SkuFullReductionEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveSkuReductionInfo(SkuReductionTO skuReductionTo);
 }
 

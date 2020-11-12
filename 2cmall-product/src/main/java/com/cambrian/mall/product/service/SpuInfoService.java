@@ -3,6 +3,7 @@ package com.cambrian.mall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.mall.product.entity.SpuInfoEntity;
+import com.cambrian.mall.product.vo.SpuSaveVO;
 
 import java.util.Map;
 
@@ -16,5 +17,11 @@ import java.util.Map;
 public interface SpuInfoService extends IService<SpuInfoEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveSpuInfo(SpuSaveVO spu);
+
+    void saveBaseSpuInfo(SpuInfoEntity spuInfoEntity);
+
+    PageUtils queryPageByCondition(Map<String, Object> params);
 }
 

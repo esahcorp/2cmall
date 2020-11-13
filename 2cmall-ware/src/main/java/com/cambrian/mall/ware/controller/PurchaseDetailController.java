@@ -1,19 +1,14 @@
 package com.cambrian.mall.ware.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.cambrian.mall.ware.entity.PurchaseDetailEntity;
-import com.cambrian.mall.ware.service.PurchaseDetailService;
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.common.utils.R;
+import com.cambrian.mall.ware.entity.PurchaseDetailEntity;
+import com.cambrian.mall.ware.service.PurchaseDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Map;
 
 
 
@@ -33,7 +28,7 @@ public class PurchaseDetailController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     // @RequiresPermissions("ware:purchasedetail:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = purchaseDetailService.queryPage(params);

@@ -11,21 +11,25 @@ public class ProductConstants {
         /**
          * 销售属性
          */
-        ATTR_TYPE_SALE("sale"),
+        ATTR_TYPE_SALE(0, "sale"),
         /**
          * 基本属性
          */
-        ATTR_TYPE_BASE("base");
+        ATTR_TYPE_BASE(1, "base");
+
+        @Getter
+        private final int code;
 
         @Getter
         private final String message;
 
-        AttrTypeEnum(String message) {
+        AttrTypeEnum(int code, String message) {
+            this.code = code;
             this.message = message;
         }
 
         public static boolean isBase(int code) {
-            return ATTR_TYPE_BASE.ordinal() == code;
+            return ATTR_TYPE_BASE.code == code;
         }
 
         public static boolean isBase(String  message) {

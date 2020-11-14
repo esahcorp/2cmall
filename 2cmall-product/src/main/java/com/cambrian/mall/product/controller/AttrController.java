@@ -2,13 +2,16 @@ package com.cambrian.mall.product.controller;
 
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.common.utils.R;
+import com.cambrian.mall.product.entity.ProductAttrValueEntity;
 import com.cambrian.mall.product.service.AttrService;
+import com.cambrian.mall.product.service.ProductAttrValueService;
 import com.cambrian.mall.product.vo.AttrRespVO;
 import com.cambrian.mall.product.vo.AttrVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,6 +27,21 @@ import java.util.Map;
 public class AttrController {
     @Autowired
     private AttrService attrService;
+
+    @Autowired
+    private ProductAttrValueService productAttrValueService;
+
+    @GetMapping("/base/listforspu/{spuId}")
+    public R listForSpu(@PathVariable("spuId") Long spuId) {
+        List<ProductAttrValueEntity> attrEntities = productAttrValueService.listBySpuId(spuId);
+        return R.ok().put("data", attrEntities);
+    }
+
+    @PostMapping("/update/{spuId}")
+    public R updateViaSpu(@PathVariable("spuId") Long spuId, @RequestBody List<ProductAttrValueEntity> values) {
+        productAttrValueService.updateValueViaSpu(spuId, values);
+        return R.ok();
+    }
 
     /**
      * 列表

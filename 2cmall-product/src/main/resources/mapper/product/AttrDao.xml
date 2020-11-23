@@ -15,6 +15,12 @@
         <result property="catelogId" column="catelog_id"/>
         <result property="showDesc" column="show_desc"/>
     </resultMap>
+    <select id="selectSearchAttrIdsInIds" resultType="java.lang.Long">
+        SELECT attr_id FROM pms_attr WHERE search_type = 1 AND attr_id IN
+            <foreach collection="baseAttrIds" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+    </select>
 
 
 </mapper>

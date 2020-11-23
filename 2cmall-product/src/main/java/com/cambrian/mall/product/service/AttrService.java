@@ -38,5 +38,13 @@ public interface AttrService extends IService<AttrEntity> {
      * @return 分页列表
      */
     PageUtils listNotRelatedAttrViaCategory(Long attrGroupId, Map<String, Object> params);
+
+    /**
+     * 从参数中筛选出索引属性的 id
+     *
+     * @param baseAttrIds list of 属性 id
+     * @return list of Long, attr id
+     */
+    List<Long> filterSearchAttrIds(List<Long> baseAttrIds);
 }
 

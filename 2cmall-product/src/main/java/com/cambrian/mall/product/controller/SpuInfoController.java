@@ -26,7 +26,19 @@ public class SpuInfoController {
     @Autowired
     private SpuInfoService spuInfoService;
 
-    // /product/spuinfo/save
+    /**
+     * 上架
+     *
+     * @param spuId Long
+     * @return R
+     */
+    @PostMapping("/{spuId}/up")
+    public R up(@PathVariable Long spuId) {
+
+        spuInfoService.onShelf(spuId);
+        return R.ok();
+    }
+
     @PostMapping("/save")
     public R saveInfo(@RequestBody SpuSaveVO spu) {
 

@@ -50,4 +50,30 @@ public class ProductConstants {
             return this.message;
         }
     }
+
+    public enum SpuPublishStatus {
+        /**
+         * 新建
+         */
+        NEW(0),
+        /**
+         * 上架
+         */
+        UP(1),
+        /**
+         * 下架
+         */
+        DOWN(2);
+
+        private final int code;
+
+        SpuPublishStatus(int code) {
+            this.code = code;
+        }
+
+
+        public int getCode() {
+            return code;
+        }
+    }
 }

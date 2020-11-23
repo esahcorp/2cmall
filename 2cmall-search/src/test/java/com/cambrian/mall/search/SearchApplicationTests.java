@@ -1,6 +1,5 @@
 package com.cambrian.mall.search;
 
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,13 +16,9 @@ public class SearchApplicationTests {
 	@Autowired
 	RestHighLevelClient restHighLevelClient;
 
-	@Autowired
-	RequestOptions requestOptions;
-
 	@Test
 	public void contextLoads() {
 		assertNotNull(restHighLevelClient);
-		assertNotNull(requestOptions);
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.cambrian.mall.search;
 
 import com.alibaba.fastjson.JSON;
+import com.cambrian.mall.search.config.MallElasticsearchConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.elasticsearch.action.DocWriteResponse;
@@ -8,7 +9,6 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -42,15 +42,12 @@ public class ElasticsearchAPITest {
     @Autowired
     private RestHighLevelClient restHighLevelClient;
 
-    @Autowired
-    private RequestOptions options;
-
     @Test
     public void indexDoc() throws IOException {
         IndexRequest request = new IndexRequest("users");
         User user = new User("zhangsan", 20, "M");
         request.source(JSON.toJSONString(user), XContentType.JSON);
-        IndexResponse response = restHighLevelClient.index(request, options);
+        IndexResponse response = restHighLevelClient.index(request, MallElasticsearchConfiguration.COMMON_OPTIONS);
         assertNotNull(response.getResult());
         assertEquals(DocWriteResponse.Result.CREATED, response.getResult());
     }
@@ -80,7 +77,7 @@ public class ElasticsearchAPITest {
         builder.size(5);
         searchRequest.source(builder);
 
-        SearchResponse response = restHighLevelClient.search(searchRequest, options);
+        SearchResponse response = restHighLevelClient.search(searchRequest, MallElasticsearchConfiguration.COMMON_OPTIONS);
 
         assertNotNull(response);
 

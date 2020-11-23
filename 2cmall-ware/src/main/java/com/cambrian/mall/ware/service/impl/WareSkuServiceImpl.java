@@ -3,6 +3,7 @@ package com.cambrian.mall.ware.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cambrian.common.to.SkuStockTO;
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.common.utils.Query;
 import com.cambrian.common.utils.R;
@@ -19,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service("wareSkuService")
@@ -79,6 +81,18 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
             }
             wareSkuDao.insert(create);
         }
+    }
+
+    @Override
+    public List<SkuStockTO> listSkuStock(List<Long> skuIds) {
+        return skuIds.stream().map(skuId -> {
+            Long stock = this.baseMapper.getSkuStock(skuId);
+            SkuStockTO to = new SkuStockTO();
+            to.setSkuId(skuId);
+            to.setStock(stock);
+            to.setHasStock(stock != null && stock > 0);
+            return to;
+        }).collect(Collectors.toList());
     }
 
 }

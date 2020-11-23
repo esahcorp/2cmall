@@ -1,5 +1,6 @@
 package com.cambrian.mall.ware.controller;
 
+import com.cambrian.common.to.SkuStockTO;
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.common.utils.R;
 import com.cambrian.mall.ware.entity.WareSkuEntity;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -24,6 +26,12 @@ import java.util.Map;
 public class WareSkuController {
     @Autowired
     private WareSkuService wareSkuService;
+
+    @PostMapping("/stock")
+    public R getSkuStock(@RequestBody List<Long> skuIds) {
+        List<SkuStockTO> stockList = wareSkuService.listSkuStock(skuIds);
+        return R.ok().put("data", stockList);
+    }
 
     /**
      * 列表

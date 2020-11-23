@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * @author kuma 2020-11-13
  */
-@FeignClient("2cmall-product")
-@RequestMapping("/product")
+@FeignClient(value = "2cmall-product", path = "/product")
 public interface ProductFeignService {
 
     @RequestMapping("/skuinfo/info/{skuId}")

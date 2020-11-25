@@ -7,6 +7,6 @@ spring:
         server-addr: 192.168.0.198:8848
   elasticsearch:
     rest:
-      uris: http://localhost:9200
+      uris: http://192.168.0.198:9200
 server:
   port: 40000

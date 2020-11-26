@@ -75,12 +75,17 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Override
     public List<CategoryEntity> listRootCategories() {
-        return listCategoriesByParentId(0L);
+        return this.list(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0L));
     }
 
     @Override
     public Map<String, List<Catalog2VO>> listCatalogJsonModel() {
-        List<CategoryEntity> categoryEntities = this.listRootCategories();
+        /*
+         * 优化一 查询一次数据库，降低 IO 频率，提升性能
+         */
+        List<CategoryEntity> allCategories = this.baseMapper.selectList(null);
+
+        List<CategoryEntity> categoryEntities = this.filterCategoriesByParentId(allCategories, 0L);
         // 最外层 string:list 的映射
         Map<String, List<Catalog2VO>> catalogJsonModel = null;
         if (!CollectionUtils.isEmpty(categoryEntities)) {
@@ -90,7 +95,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                         //
                         // 构建 c2 list
                         // ------------------------------------------------------------------------------
-                        List<CategoryEntity> category2Entities = listCategoriesByParentId(l1Id);
+                        List<CategoryEntity> category2Entities = filterCategoriesByParentId(allCategories, l1Id);
                         List<Catalog2VO> catalog2Vos = new ArrayList<>();
                         if (!CollectionUtils.isEmpty(category2Entities)) {
                             catalog2Vos = category2Entities.stream()
@@ -102,7 +107,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                                         //
                                         // 1. 依据 id 查询 c2 对应的 c3 list
                                         // ------------------------------------------------------------------------------
-                                        List<CategoryEntity> category3Entities = listCategoriesByParentId(l2Id);
+                                        List<CategoryEntity> category3Entities = filterCategoriesByParentId(allCategories, l2Id);
                                         List<Catalog3VO> catalog3Vos = null;
                                         if (!CollectionUtils.isEmpty(category3Entities)) {
                                             catalog3Vos = category3Entities.stream()
@@ -124,8 +129,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return catalogJsonModel;
     }
 
-    private List<CategoryEntity> listCategoriesByParentId(Long parentId) {
-        return this.list(new QueryWrapper<CategoryEntity>().eq("parent_cid", parentId));
+    private List<CategoryEntity> filterCategoriesByParentId(List<CategoryEntity> allCategories, Long parentId) {
+        return allCategories.stream().filter(c -> c.getParentCid().equals(parentId)).collect(Collectors.toList());
     }
 
     private void assemblyPathRecursive(Long categoryId, List<Long> container) {

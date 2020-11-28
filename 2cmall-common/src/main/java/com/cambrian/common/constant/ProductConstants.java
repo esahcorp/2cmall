@@ -76,4 +76,22 @@ public class ProductConstants {
             return code;
         }
     }
+
+    public static final String SERVICE_CODE = "PMS";
+
+    public static final class CacheKey {
+        private CacheKey() {
+            throw new UnsupportedOperationException("Until class");
+        }
+
+        public static final String CATALOG_JSON = SERVICE_CODE + "-catalogJson";
+    }
+
+    public static final class RedisLockKey {
+        private RedisLockKey() {
+            throw new UnsupportedOperationException("Until class");
+        }
+
+        public static final String LOCK_CATALOG_JSON = "lock-" + CacheKey.CATALOG_JSON;
+    }
 }

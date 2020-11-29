@@ -16,6 +16,8 @@ import com.cambrian.mall.product.vo.Catalog2VO;
 import com.cambrian.mall.product.vo.Catalog2VO.Catalog3VO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
@@ -33,11 +35,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     private final CategoryBrandRelationService categoryBrandRelationService;
     private final StringRedisTemplate stringRedisTemplate;
+    private final RedissonClient redisson;
 
     public CategoryServiceImpl(CategoryBrandRelationService categoryBrandRelationService,
-                               StringRedisTemplate stringRedisTemplate) {
+                               StringRedisTemplate stringRedisTemplate,
+                               RedissonClient redisson) {
         this.categoryBrandRelationService = categoryBrandRelationService;
         this.stringRedisTemplate = stringRedisTemplate;
+        this.redisson = redisson;
     }
 
     @Override
@@ -103,8 +108,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         if (jsonModel != null) {
             return jsonModel;
         }
+        log.debug("缓存 Key {} 未命中，准备从数据库中查询数据", ProductConstants.CacheKey.CATALOG_JSON);
         /* 处理缓存为空的情况 */
-        return getCatalogJsonFromDbWithRedisLock();
+        return getCatalogJsonFromDbWithRedissonLock();
     }
 
     @SuppressWarnings("unused")
@@ -112,12 +118,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return getCatalogJsonFromDb();
     }
 
+    @SuppressWarnings("unused")
     private synchronized Map<String, List<Catalog2VO>> getCatalogJsonFromDbWithRedisLock() {
+        log.debug("查询三级分类数据前尝试获得分布式锁");
         String uuid = UUID.randomUUID().toString();
         // SET NX EX 加锁
         Boolean locked = stringRedisTemplate.opsForValue()
-                .setIfAbsent(ProductConstants.RedisLockKey.LOCK_CATALOG_JSON, uuid, 300, TimeUnit.SECONDS);
+                .setIfAbsent(ProductConstants.LockKey.LOCK_CATALOG_JSON, uuid, 300, TimeUnit.SECONDS);
         if (Boolean.TRUE.equals(locked)) {
+            log.debug("加锁成功……");
             Map<String, List<Catalog2VO>> jsonModel;
             try {
                 jsonModel = getCatalogJsonFromDb();
@@ -132,11 +141,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
                                 "end";
                 stringRedisTemplate.execute(
                         new DefaultRedisScript<>(releaseLockScript, Long.class),
-                        Collections.singletonList(ProductConstants.RedisLockKey.LOCK_CATALOG_JSON),
+                        Collections.singletonList(ProductConstants.LockKey.LOCK_CATALOG_JSON),
                         uuid);
+                log.debug("释放锁成功……");
             }
             return jsonModel;
         } else {
+            log.debug("加锁失败，等待 300ms 后尝试重新加锁");
             /* 等待 300ms 后自旋加锁 */
             try {
                 TimeUnit.MILLISECONDS.sleep(300);
@@ -147,24 +158,42 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         }
     }
 
+    private Map<String, List<Catalog2VO>> getCatalogJsonFromDbWithRedissonLock() {
+        RLock lock = redisson.getLock(ProductConstants.LockKey.LOCK_CATALOG_JSON);
+        lock.lock();
+        Map<String, List<Catalog2VO>> jsonModel;
+        try {
+            jsonModel = getCatalogJsonFromDb();
+        } finally {
+            // 释放锁
+            lock.unlock();
+        }
+        return jsonModel;
+    }
+
     private Map<String, List<Catalog2VO>> getCatalogJsonFromDb() {
+        log.debug("三级分类：重新设置缓存，查询数据库前再次查询缓存，避免同步请求覆盖问题");
         /* 获取锁之后再次检查缓存，因为可能出现在等待锁期间前序请求已经重新设置了缓存的情况 */
         Map<String, List<Catalog2VO>> jsonModel = listCatalogJsonModelFromCache();
         if (jsonModel != null) {
+            log.debug("三级分类：再次查询缓存时从数据库中获取了缓存，不再执行查数据库操作");
             return jsonModel;
         }
         jsonModel = listCatalogJsonModelFromDb();
+        // 获取 1- 5分钟的随机增值
+        long randomIncrease = Math.round(1 * Math.random() * (5 - 1));
         if (jsonModel == null) {
+            log.debug("三级分类：从数据库未取得相应数据，将使用空字符串作为缓存值");
             // 存储空值避免缓存穿透
             stringRedisTemplate.opsForValue()
-                    .set(ProductConstants.CacheKey.CATALOG_JSON, "", 5, TimeUnit.MINUTES);
+                    .set(ProductConstants.CacheKey.CATALOG_JSON, "", randomIncrease, TimeUnit.MINUTES);
         } else {
+            log.debug("三级分类：重新设置缓存");
             // 重新设置缓存，为了避免缓存雪崩需要设置额外的失效时间增幅
-            // 获取 1- 5分钟的随机增值
-            long randomIncrease = Math.round(1 * Math.random() * (5 - 1));
             long expireMinutes = 24 * 60 + randomIncrease;
             stringRedisTemplate.opsForValue()
                     .set(ProductConstants.CacheKey.CATALOG_JSON, JSON.toJSONString(jsonModel), expireMinutes, TimeUnit.MINUTES);
+            log.debug("三级分类：刷新成功");
         }
         return jsonModel;
     }

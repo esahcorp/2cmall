@@ -87,8 +87,8 @@ public class ProductConstants {
         public static final String CATALOG_JSON = SERVICE_CODE + "-catalogJson";
     }
 
-    public static final class RedisLockKey {
-        private RedisLockKey() {
+    public static final class LockKey {
+        private LockKey() {
             throw new UnsupportedOperationException("Until class");
         }
 

@@ -118,19 +118,23 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         Boolean locked = stringRedisTemplate.opsForValue()
                 .setIfAbsent(ProductConstants.RedisLockKey.LOCK_CATALOG_JSON, uuid, 300, TimeUnit.SECONDS);
         if (Boolean.TRUE.equals(locked)) {
-            Map<String, List<Catalog2VO>> jsonModel = getCatalogJsonFromDb();
-            // 释放锁
-            String releaseLockScript =
-                    "if redis.call(\"get\",KEYS[1]) == ARGV[1]\n" +
-                    "then\n" +
-                    "    return redis.call(\"del\",KEYS[1])\n" +
-                    "else\n" +
-                    "    return 0\n" +
-                    "end";
-            stringRedisTemplate.execute(
-                    new DefaultRedisScript<>(releaseLockScript, Long.class),
-                    Collections.singletonList(ProductConstants.RedisLockKey.LOCK_CATALOG_JSON),
-                    uuid);
+            Map<String, List<Catalog2VO>> jsonModel;
+            try {
+                jsonModel = getCatalogJsonFromDb();
+            } finally {
+                // 释放锁
+                String releaseLockScript =
+                        "if redis.call(\"get\",KEYS[1]) == ARGV[1]\n" +
+                                "then\n" +
+                                "    return redis.call(\"del\",KEYS[1])\n" +
+                                "else\n" +
+                                "    return 0\n" +
+                                "end";
+                stringRedisTemplate.execute(
+                        new DefaultRedisScript<>(releaseLockScript, Long.class),
+                        Collections.singletonList(ProductConstants.RedisLockKey.LOCK_CATALOG_JSON),
+                        uuid);
+            }
             return jsonModel;
         } else {
             /* 等待 300ms 后自旋加锁 */

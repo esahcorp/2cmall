@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
@@ -80,6 +82,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return path.toArray(new Long[0]);
     }
 
+    @CacheEvict(value = "category", key = "'root-categories'")
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateCascade(CategoryEntity category) {
@@ -89,6 +92,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         }
     }
 
+    @Cacheable(value = "category", key = "'root-categories'")
     @Override
     public List<CategoryEntity> listRootCategories() {
         return this.list(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0L));

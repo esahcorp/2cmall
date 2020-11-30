@@ -84,7 +84,7 @@ public class ProductConstants {
             throw new UnsupportedOperationException("Until class");
         }
 
-        public static final String CATALOG_JSON = SERVICE_CODE + "-catalogJson";
+        public static final String CATALOG_JSON = SERVICE_CODE + ":catalogJson";
     }
 
     public static final class LockKey {
@@ -92,6 +92,6 @@ public class ProductConstants {
             throw new UnsupportedOperationException("Until class");
         }
 
-        public static final String LOCK_CATALOG_JSON = "lock-" + CacheKey.CATALOG_JSON;
+        public static final String LOCK_CATALOG_JSON = "lock:" + CacheKey.CATALOG_JSON;
     }
 }

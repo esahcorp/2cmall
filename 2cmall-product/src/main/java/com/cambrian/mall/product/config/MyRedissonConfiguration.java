@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @author kuma 2020-11-28
  */
 @Configuration
-public class RedissonConfiguration {
+public class MyRedissonConfiguration {
 
     @Bean(destroyMethod = "shutdown")
     public RedissonClient redissonClient() {

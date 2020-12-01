@@ -55,7 +55,7 @@ spring:
           predicates:
             - Host=2cmall.com,mall.cambrian.com
 
-        - id: app_index_route
+        - id: app_search_route
           uri: lb://2cmall-search
           predicates:
             - Host=search.2cmall.com,search.mall.cambrian.com

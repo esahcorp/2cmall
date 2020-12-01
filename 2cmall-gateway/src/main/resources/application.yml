@@ -50,10 +50,15 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*), /renren-fast/$\{segment}
 
-        - id: app_host_route
+        - id: app_index_route
           uri: lb://2cmall-product
           predicates:
-            - Host=**.2cmall.com,**.mall.cambrian.com
+            - Host=2cmall.com,mall.cambrian.com
+
+        - id: app_index_route
+          uri: lb://2cmall-search
+          predicates:
+            - Host=search.2cmall.com,search.mall.cambrian.com
 
       # CORS 配置
       globalcors:

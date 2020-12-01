@@ -8,5 +8,7 @@ spring:
   elasticsearch:
     rest:
       uris: http://192.168.0.198:9200
+  thymeleaf:
+    cache: false
 server:
   port: 40000

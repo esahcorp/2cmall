@@ -1,5 +1,6 @@
 package com.cambrian.mall.product.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -282,10 +283,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         Map<Long, Boolean> hasStockMap = new HashMap<>();
         try {
             R response = wareFeignService.getSkuStock(skuIds);
-            List<SkuStockTO> skuStocks = (List<SkuStockTO>) response.get("data");
+            List<SkuStockTO> skuStocks = response.get("data", new TypeReference<List<SkuStockTO>>(){});
             hasStockMap = skuStocks.stream().collect(Collectors.toMap(SkuStockTO::getSkuId, SkuStockTO::getHasStock));
         } catch (Exception e) {
-            log.error("调用库存服务查询 SKU 库存失败，原因：{}", e);
+            log.error("调用库存服务查询 SKU 库存失败，原因：", e);
         }
 
         Map<Long, Boolean> finalHasStockMap = hasStockMap;

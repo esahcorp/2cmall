@@ -5,7 +5,6 @@ import com.cambrian.common.utils.R;
 import com.cambrian.mall.coupon.entity.CouponEntity;
 import com.cambrian.mall.coupon.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,18 +27,18 @@ public class CouponController {
     @Autowired
     private CouponService couponService;
 
-    @Value("${coupon.user.name}")
-    private String name;
-
-    @Value("${coupon.user.age}")
-    private String age;
-
-    @RequestMapping("/test")
-    public R test() {
-        CouponEntity couponEntity = new CouponEntity();
-        couponEntity.setCouponName("满 100 减 50");
-        return R.ok().put("coupon", couponEntity).put("name", name).put("age", age);
-    }
+//    @Value("${coupon.user.name}")
+//    private String name;
+//
+//    @Value("${coupon.user.age}")
+//    private String age;
+//
+//    @RequestMapping("/test")
+//    public R test() {
+//        CouponEntity couponEntity = new CouponEntity();
+//        couponEntity.setCouponName("满 100 减 50");
+//        return R.ok().put("coupon", couponEntity).put("name", name).put("age", age);
+//    }
 
     /**
      * 列表

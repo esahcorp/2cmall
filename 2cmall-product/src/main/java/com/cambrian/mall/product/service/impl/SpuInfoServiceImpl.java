@@ -265,10 +265,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
                 .collect(Collectors.toList());
         List<Long> searchAttrIds = attrService.filterSearchAttrIds(baseAttrIds);
         Set<Long> searchAttrIdSet = new HashSet<>(searchAttrIds);
-        List<SkuEsModel.AttrEsMode> attrValues = baseAttrValues.stream()
+        List<SkuEsModel.AttrEsModel> attrValues = baseAttrValues.stream()
                 .filter(attr -> searchAttrIdSet.contains(attr.getAttrId()))
                 .map(attr -> {
-                    SkuEsModel.AttrEsMode esAttr = new SkuEsModel.AttrEsMode();
+                    SkuEsModel.AttrEsModel esAttr = new SkuEsModel.AttrEsModel();
                     BeanUtils.copyProperties(attr, esAttr);
                     return esAttr;
                 }).collect(Collectors.toList());

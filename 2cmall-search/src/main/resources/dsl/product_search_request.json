@@ -1,0 +1,188 @@
+{
+  "from": 0,
+  "size": 20,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "skuTitle": {
+              "query": "华为"
+            }
+          }
+        }
+      ],
+      "filter": [
+        {
+          "term": {
+            "catalogId": {
+              "value": 225
+            }
+          }
+        },
+        {
+          "terms": {
+            "brandId": [
+              1,
+              2
+            ]
+          }
+        },
+        {
+          "nested": {
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "term": {
+                      "attrs.attrId": {
+                        "value": "9"
+                      }
+                    }
+                  },
+                  {
+                    "terms": {
+                      "attrs.attrValue": [
+                        "麒麟990 5G",
+                        "A14 仿生"
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "path": "attrs"
+          }
+        },
+        {
+          "nested": {
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "term": {
+                      "attrs.attrId": {
+                        "value": "2",
+                        "boost": 1.0
+                      }
+                    }
+                  },
+                  {
+                    "terms": {
+                      "attrs.attrValue": [
+                        "OLED",
+                        "LCD"
+                      ]
+                    }
+                  }
+                ],
+                "adjust_pure_negative": true,
+                "boost": 1.0
+              }
+            },
+            "path": "attrs",
+            "ignore_unmapped": false,
+            "score_mode": "none",
+            "boost": 1.0
+          }
+        },
+        {
+          "term": {
+            "hasStock": {
+              "value": "true"
+            }
+          }
+        },
+        {
+          "range": {
+            "skuPrice": {
+              "from": "6000",
+              "to": null
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "skuPrice": {
+        "order": "desc"
+      }
+    }
+  ],
+  "aggregations": {
+    "brand_agg": {
+      "terms": {
+        "field": "brandId",
+        "size": 50
+      },
+      "aggregations": {
+        "brand_img_agg": {
+          "terms": {
+            "field": "brandImg",
+            "size": 1
+          }
+        },
+        "brand_name_agg": {
+          "terms": {
+            "field": "brandName",
+            "size": 1
+          }
+        }
+      }
+    },
+    "catalog_agg": {
+      "terms": {
+        "field": "catalogId",
+        "size": 20
+      },
+      "aggregations": {
+        "catalog_name_agg": {
+          "terms": {
+            "field": "catalogName",
+            "size": 1
+          }
+        }
+      }
+    },
+    "attr_agg": {
+      "nested": {
+        "path": "attrs"
+      },
+      "aggregations": {
+        "attr_id_agg": {
+          "terms": {
+            "field": "attrs.attrId",
+            "size": 50
+          },
+          "aggregations": {
+            "attr_name_agg": {
+              "terms": {
+                "field": "attrs.attrName",
+                "size": 1
+              }
+            },
+            "attr_value_agg": {
+              "terms": {
+                "field": "attrs.attrValue",
+                "size": 50
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "highlight": {
+    "pre_tags": [
+      "<b style='color:red'>"
+    ],
+    "post_tags": [
+      "</b>"
+    ],
+    "fields": {
+      "skuTitle": {}
+    }
+  }
+}

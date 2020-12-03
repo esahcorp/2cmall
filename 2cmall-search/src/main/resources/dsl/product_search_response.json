@@ -1,0 +1,332 @@
+{
+  "took" : 7,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 4,
+      "relation" : "eq"
+    },
+    "max_score" : null,
+    "hits" : [
+      {
+        "_index" : "product",
+        "_type" : "_doc",
+        "_id" : "15",
+        "_score" : null,
+        "_source" : {
+          "attrs" : [
+            {
+              "attrId" : 9,
+              "attrName" : "处理器",
+              "attrValue" : "麒麟990 5G"
+            },
+            {
+              "attrId" : 2,
+              "attrName" : "屏幕材质",
+              "attrValue" : "OLED"
+            },
+            {
+              "attrId" : 11,
+              "attrName" : "屏幕尺寸",
+              "attrValue" : "6.58寸"
+            }
+          ],
+          "brandId" : 2,
+          "brandImg" : "https://2cmall.oss-cn-shenzhen.aliyuncs.com/2020-10-15/ffdaae38-904a-46b8-8add-87912a29f1b6_huawei.png",
+          "brandName" : "HUAWEI",
+          "catalogId" : 225,
+          "catalogName" : "手机",
+          "hasStock" : true,
+          "hotScore" : 0,
+          "skuId" : 15,
+          "skuImg" : "https://2cmall.oss-cn-shenzhen.aliyuncs.com/2020-12-03/46d29445-3188-41d6-8f7c-8227c80ba93f_0d40c24b264aa511.jpg",
+          "skuPrice" : 7388.0,
+          "skuTitle" : "华为P40 Pro 黑色 8GB+512GB",
+          "spuId" : 4
+        },
+        "highlight" : {
+          "skuTitle" : [
+            "<b style='color:red'>华为</b>P40 Pro 黑色 8GB+512GB"
+          ]
+        },
+        "sort" : [
+          "7388.0"
+        ]
+      },
+      {
+        "_index" : "product",
+        "_type" : "_doc",
+        "_id" : "18",
+        "_score" : null,
+        "_source" : {
+          "attrs" : [
+            {
+              "attrId" : 9,
+              "attrName" : "处理器",
+              "attrValue" : "麒麟990 5G"
+            },
+            {
+              "attrId" : 2,
+              "attrName" : "屏幕材质",
+              "attrValue" : "OLED"
+            },
+            {
+              "attrId" : 11,
+              "attrName" : "屏幕尺寸",
+              "attrValue" : "6.58寸"
+            }
+          ],
+          "brandId" : 2,
+          "brandImg" : "https://2cmall.oss-cn-shenzhen.aliyuncs.com/2020-10-15/ffdaae38-904a-46b8-8add-87912a29f1b6_huawei.png",
+          "brandName" : "HUAWEI",
+          "catalogId" : 225,
+          "catalogName" : "手机",
+          "hasStock" : true,
+          "hotScore" : 0,
+          "skuId" : 18,
+          "skuImg" : "https://2cmall.oss-cn-shenzhen.aliyuncs.com/2020-12-03/46d29445-3188-41d6-8f7c-8227c80ba93f_0d40c24b264aa511.jpg",
+          "skuPrice" : 7388.0,
+          "skuTitle" : "华为P40 Pro 白色 8GB+512GB",
+          "spuId" : 4
+        },
+        "highlight" : {
+          "skuTitle" : [
+            "<b style='color:red'>华为</b>P40 Pro 白色 8GB+512GB"
+          ]
+        },
+        "sort" : [
+          "7388.0"
+        ]
+      },
+      {
+        "_index" : "product",
+        "_type" : "_doc",
+        "_id" : "13",
+        "_score" : null,
+        "_source" : {
+          "attrs" : [
+            {
+              "attrId" : 9,
+              "attrName" : "处理器",
+              "attrValue" : "麒麟990 5G"
+            },
+            {
+              "attrId" : 2,
+              "attrName" : "屏幕材质",
+              "attrValue" : "OLED"
+            },
+            {
+              "attrId" : 11,
+              "attrName" : "屏幕尺寸",
+              "attrValue" : "6.58寸"
+            }
+          ],
+          "brandId" : 2,
+          "brandImg" : "https://2cmall.oss-cn-shenzhen.aliyuncs.com/2020-10-15/ffdaae38-904a-46b8-8add-87912a29f1b6_huawei.png",
+          "brandName" : "HUAWEI",
+          "catalogId" : 225,
+          "catalogName" : "手机",
+          "hasStock" : true,
+          "hotScore" : 0,
+          "skuId" : 13,
+          "skuImg" : "https://2cmall.oss-cn-shenzhen.aliyuncs.com/2020-12-03/46d29445-3188-41d6-8f7c-8227c80ba93f_0d40c24b264aa511.jpg",
+          "skuPrice" : 6488.0,
+          "skuTitle" : "华为P40 Pro 黑色  8GB+256GB",
+          "spuId" : 4
+        },
+        "highlight" : {
+          "skuTitle" : [
+            "<b style='color:red'>华为</b>P40 Pro 黑色  8GB+256GB"
+          ]
+        },
+        "sort" : [
+          "6488.0"
+        ]
+      },
+      {
+        "_index" : "product",
+        "_type" : "_doc",
+        "_id" : "16",
+        "_score" : null,
+        "_source" : {
+          "attrs" : [
+            {
+              "attrId" : 9,
+              "attrName" : "处理器",
+              "attrValue" : "麒麟990 5G"
+            },
+            {
+              "attrId" : 2,
+              "attrName" : "屏幕材质",
+              "attrValue" : "OLED"
+            },
+            {
+              "attrId" : 11,
+              "attrName" : "屏幕尺寸",
+              "attrValue" : "6.58寸"
+            }
+          ],
+          "brandId" : 2,
+          "brandImg" : "https://2cmall.oss-cn-shenzhen.aliyuncs.com/2020-10-15/ffdaae38-904a-46b8-8add-87912a29f1b6_huawei.png",
+          "brandName" : "HUAWEI",
+          "catalogId" : 225,
+          "catalogName" : "手机",
+          "hasStock" : true,
+          "hotScore" : 0,
+          "skuId" : 16,
+          "skuImg" : "https://2cmall.oss-cn-shenzhen.aliyuncs.com/2020-12-03/46d29445-3188-41d6-8f7c-8227c80ba93f_0d40c24b264aa511.jpg",
+          "skuPrice" : 6488.0,
+          "skuTitle" : "华为P40 Pro 白色  8GB+256GB",
+          "spuId" : 4
+        },
+        "highlight" : {
+          "skuTitle" : [
+            "<b style='color:red'>华为</b>P40 Pro 白色  8GB+256GB"
+          ]
+        },
+        "sort" : [
+          "6488.0"
+        ]
+      }
+    ]
+  },
+  "aggregations" : {
+    "catalog_agg" : {
+      "doc_count_error_upper_bound" : 0,
+      "sum_other_doc_count" : 0,
+      "buckets" : [
+        {
+          "key" : 225,
+          "doc_count" : 4,
+          "catalog_name_agg" : {
+            "doc_count_error_upper_bound" : 0,
+            "sum_other_doc_count" : 0,
+            "buckets" : [
+              {
+                "key" : "手机",
+                "doc_count" : 4
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "attr_agg" : {
+      "doc_count" : 12,
+      "attr_id_agg" : {
+        "doc_count_error_upper_bound" : 0,
+        "sum_other_doc_count" : 0,
+        "buckets" : [
+          {
+            "key" : 2,
+            "doc_count" : 4,
+            "attr_name_agg" : {
+              "doc_count_error_upper_bound" : 0,
+              "sum_other_doc_count" : 0,
+              "buckets" : [
+                {
+                  "key" : "屏幕材质",
+                  "doc_count" : 4
+                }
+              ]
+            },
+            "attr_value_agg" : {
+              "doc_count_error_upper_bound" : 0,
+              "sum_other_doc_count" : 0,
+              "buckets" : [
+                {
+                  "key" : "OLED",
+                  "doc_count" : 4
+                }
+              ]
+            }
+          },
+          {
+            "key" : 9,
+            "doc_count" : 4,
+            "attr_name_agg" : {
+              "doc_count_error_upper_bound" : 0,
+              "sum_other_doc_count" : 0,
+              "buckets" : [
+                {
+                  "key" : "处理器",
+                  "doc_count" : 4
+                }
+              ]
+            },
+            "attr_value_agg" : {
+              "doc_count_error_upper_bound" : 0,
+              "sum_other_doc_count" : 0,
+              "buckets" : [
+                {
+                  "key" : "麒麟990 5G",
+                  "doc_count" : 4
+                }
+              ]
+            }
+          },
+          {
+            "key" : 11,
+            "doc_count" : 4,
+            "attr_name_agg" : {
+              "doc_count_error_upper_bound" : 0,
+              "sum_other_doc_count" : 0,
+              "buckets" : [
+                {
+                  "key" : "屏幕尺寸",
+                  "doc_count" : 4
+                }
+              ]
+            },
+            "attr_value_agg" : {
+              "doc_count_error_upper_bound" : 0,
+              "sum_other_doc_count" : 0,
+              "buckets" : [
+                {
+                  "key" : "6.58寸",
+                  "doc_count" : 4
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "brand_agg" : {
+      "doc_count_error_upper_bound" : 0,
+      "sum_other_doc_count" : 0,
+      "buckets" : [
+        {
+          "key" : 2,
+          "doc_count" : 4,
+          "brand_img_agg" : {
+            "doc_count_error_upper_bound" : 0,
+            "sum_other_doc_count" : 0,
+            "buckets" : [
+              {
+                "key" : "https://2cmall.oss-cn-shenzhen.aliyuncs.com/2020-10-15/ffdaae38-904a-46b8-8add-87912a29f1b6_huawei.png",
+                "doc_count" : 4
+              }
+            ]
+          },
+          "brand_name_agg" : {
+            "doc_count_error_upper_bound" : 0,
+            "sum_other_doc_count" : 0,
+            "buckets" : [
+              {
+                "key" : "HUAWEI",
+                "doc_count" : 4
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

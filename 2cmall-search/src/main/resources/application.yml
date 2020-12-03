@@ -12,3 +12,6 @@ spring:
     cache: false
 server:
   port: 40000
+logging:
+  level:
+    com.cambrian.mall: debug

@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.cambrian.common.to.es.SkuEsModel.AttrEsModel.*;
 import static com.cambrian.common.to.es.SkuEsModel.*;
@@ -306,6 +307,7 @@ public class MallSearchServiceImpl implements MallSearchService {
         long arrangement = totalHits / searchParam.getPageSize();
         long totalPages = (int) totalHits % searchParam.getPageSize() == 0 ? arrangement : arrangement + 1;
         result.setTotalPages((int) totalPages);
+        result.setPageNavs(IntStream.range(1, (int) (totalPages + 1)).boxed().collect(Collectors.toList()));
 
         return result;
     }

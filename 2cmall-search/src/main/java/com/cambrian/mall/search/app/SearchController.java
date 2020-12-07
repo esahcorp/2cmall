@@ -23,6 +23,6 @@ public class SearchController {
         SearchResult result = searchService.search(searchParam);
         model.addAttribute("result", result);
 
-        return "search";
+        return "index";
     }
 }

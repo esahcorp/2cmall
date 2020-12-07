@@ -23,6 +23,7 @@ public class SearchResult {
     private List<BrandVO> brands;
     private List<CatalogVO> catalogs;
     private List<AttrVO> attrs;
+    private List<Integer> pageNavs;
 
     @Data
     @NoArgsConstructor

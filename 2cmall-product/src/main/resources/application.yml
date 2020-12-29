@@ -23,7 +23,6 @@ spring:
       time-to-live: 1h
       cache-null-values: true
       use-key-prefix: true
-
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
@@ -38,3 +37,8 @@ server:
 logging:
   level:
     com.cambrian.mall: debug
+cmall:
+  thread-pool:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10

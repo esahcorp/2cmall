@@ -5,6 +5,7 @@ import com.cambrian.common.utils.PageUtils;
 import com.cambrian.mall.product.entity.AttrGroupEntity;
 import com.cambrian.mall.product.vo.AttrGroupWithAttrVO;
 import com.cambrian.mall.product.vo.AttrRelationVO;
+import com.cambrian.mall.product.vo.SpuItemAttrGroupVO;
 
 import java.util.List;
 import java.util.Map;
@@ -25,5 +26,7 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
     void removeRelationBatch(List<AttrRelationVO> relations);
 
     List<AttrGroupWithAttrVO> listGroupWithAttrByCatalogId(Long catalogId);
+
+    List<SpuItemAttrGroupVO> listGroupWithAttrValue(Long catalogId, Long spuId);
 }
 

@@ -1,6 +1,10 @@
 package com.cambrian.mall.product;
 
+import com.cambrian.mall.product.dao.AttrGroupDao;
+import com.cambrian.mall.product.dao.SkuSaleAttrValueDao;
 import com.cambrian.mall.product.service.BrandService;
+import com.cambrian.mall.product.vo.SkuItemSaleAttrVO;
+import com.cambrian.mall.product.vo.SpuItemAttrGroupVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.redisson.api.RedissonClient;
@@ -10,7 +14,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertNotNull;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,12 +34,34 @@ public class ProductApplicationTests {
 	@Autowired
 	RedissonClient redisson;
 
+	@Autowired
+	AttrGroupDao attrGroupDao;
+
+	@Autowired
+	SkuSaleAttrValueDao skuSaleAttrValueDao;
+
 	@Test
 	public void contextLoads() {
 		assertNotNull(brandService);
 		assertNotNull(jdbcTemplate);
 		assertNotNull(stringRedisTemplate);
 		assertNotNull(redisson);
+	}
+
+	@Test
+	public void listGroupWithAttrValue() {
+		List<SpuItemAttrGroupVO> items = attrGroupDao.listGroupWithAttrValue(225L, 3L);
+		assertFalse(items.isEmpty());
+		System.out.println(items);
+		List<SpuItemAttrGroupVO> empty = attrGroupDao.listGroupWithAttrValue(225L, 100L);
+		assertTrue(empty.isEmpty());
+	}
+
+	@Test
+	public void listSaleAttrWithValueList() {
+		List<SkuItemSaleAttrVO> attrs = skuSaleAttrValueDao.selectSaleAttrWithValueListBySpuId(3L);
+		assertFalse(attrs.isEmpty());
+		System.out.println(attrs);
 	}
 
 }

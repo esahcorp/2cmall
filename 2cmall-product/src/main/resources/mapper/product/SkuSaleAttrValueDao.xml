@@ -12,6 +12,20 @@
         <result property="attrValue" column="attr_value"/>
         <result property="attrSort" column="attr_sort"/>
     </resultMap>
+    <resultMap id="saleAttrWithValueList" type="com.cambrian.mall.product.vo.SkuItemSaleAttrVO">
+        <result property="attrId" column="attr_id"/>
+        <result property="attrName" column="attr_name"/>
+        <collection property="attrValues" ofType="string">
+            <result column="attr_value"/>
+        </collection>
+    </resultMap>
+    <select id="selectSaleAttrWithValueListBySpuId"
+            resultMap="saleAttrWithValueList">
+        select psi.sku_id, pssav.attr_id, pssav.attr_name, pssav.attr_value
+        from pms_sku_info psi
+                 join pms_sku_sale_attr_value pssav on psi.sku_id = pssav.sku_id
+        where psi.spu_id = #{spuId}
+    </select>
 
 
 </mapper>

@@ -12,6 +12,27 @@
         <result property="icon" column="icon"/>
         <result property="catelogId" column="catelog_id"/>
     </resultMap>
+    <resultMap id="groupWithValueMap" type="com.cambrian.mall.product.vo.SpuItemAttrGroupVO">
+        <result property="attrGroupName" column="attr_group_name"/>
+        <collection property="attrs" ofType="com.cambrian.mall.product.vo.SkuAttrItem">
+            <result property="attrName" column="attr_name"/>
+            <result property="attrValue" column="attr_value"/>
+        </collection>
+    </resultMap>
+    <select id="listGroupWithAttrValue" resultMap="groupWithValueMap">
+        select ppav.spu_id,
+               pag.attr_group_id,
+               pag.attr_group_name,
+               paar.attr_id,
+               pa.attr_name,
+               ppav.attr_value
+        from pms_attr_group pag
+                 JOIN pms_attr_attrgroup_relation paar on pag.attr_group_id = paar.attr_group_id
+                 join pms_attr pa on paar.attr_id = pa.attr_id
+                 join pms_product_attr_value ppav on pa.attr_id = ppav.attr_id
+        where pag.catelog_id = #{catalogId}
+          and ppav.spu_id = #{spuId}
+    </select>
 
 
 </mapper>

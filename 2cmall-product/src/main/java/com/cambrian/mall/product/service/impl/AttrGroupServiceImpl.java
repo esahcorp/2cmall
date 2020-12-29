@@ -14,6 +14,7 @@ import com.cambrian.mall.product.service.AttrGroupService;
 import com.cambrian.mall.product.service.AttrService;
 import com.cambrian.mall.product.vo.AttrGroupWithAttrVO;
 import com.cambrian.mall.product.vo.AttrRelationVO;
+import com.cambrian.mall.product.vo.SpuItemAttrGroupVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -87,6 +88,11 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
             groupWithAttrVO.setAttrs(attrEntities);
             return groupWithAttrVO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SpuItemAttrGroupVO> listGroupWithAttrValue(Long catalogId, Long spuId) {
+        return this.baseMapper.listGroupWithAttrValue(catalogId, spuId);
     }
 
 }

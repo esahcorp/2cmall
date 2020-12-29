@@ -251,7 +251,7 @@
 				<nav>
 				<div class="nav_min">
 					<div class="nav_top">
-						<div class="nav_top_one"><a href="#"><img src="/static/item/img/111.png"/></a></div>
+						<div class="nav_top_one"><a href="http://2cmall.com"><img src="/static/item/img/111.png"/></a></div>
 						<div class="nav_top_two"><input type="text"/><button>搜索</button></div>
 						<div class="nav_top_three"><a href="../JD_Shop/One_JDshop.html">我的购物车</a><span class="glyphicon glyphicon-shopping-cart"></span>
 							<div class="nav_top_three_1">
@@ -595,9 +595,10 @@
 							<div class="box-attr clear" th:each="attr:${item.saleAttrs}">
 								<dl>
 									<dt>选择[[${attr.attrName}]]</dt>
-									<dd th:each="val:${attr.attrValues}">
-										<a href="#">
-											[[${val}]]
+									<dd th:each="val:${attr.attrValues}" th:with="contains = ${#lists.contains(val.skus, item.info.skuId)}"
+										th:styleappend="${contains} ? 'border: 1px solid red;' : 'border: 1px solid rgb(204 204 204);'">
+										<a class="sku_attr_value" th:attr="skus=${val.skus}" th:classappend="${contains} ? 'checked'">
+											[[${val.attrValue}]]
 										</a>
 									</dd>
 								</dl>
@@ -1215,6 +1216,66 @@
 	<script src="/static/item/js/jquery1.9.js" type="text/javascript" charset="utf-8"></script>
 	<script src="/static/item/js/js.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
+		$(".sku_attr_value").click(function () {
+			if ($(this).hasClass("checked")) {
+				// console.log("checked");
+				return false;
+			}
+			let skus = [];
+			$(this).addClass("clicked");
+			const curr = JSON.parse($(this).attr("skus"));
+			skus.push(curr);
+			// 去掉同一行其它 checked
+			$(this).parent().parent().find(".sku_attr_value").removeClass("checked");
+			$(".sku_attr_value.checked").each(function () {
+				skus.push(JSON.parse($(this).attr("skus")));
+			});
+			// console.log("skus", skus);
+			let filterEle = skus[0];
+			for (let i = 1; i < skus.length; i++) {
+				filterEle = filterEle.filter(x => skus[i].includes(x));
+			}
+			if (filterEle.length === 1) {
+			// 	console.log("存活", filterEle);
+				location.href = "http://item.2cmall.com/" + filterEle[0] + ".html";
+			}
+		});
+		$(function () {
+			// $(".sku_attr_value.checked");
+			// console.log("checks", checkeds);
+			$(".box-attr").each(function () {
+				$(this).find(".sku_attr_value.checked").addClass("idx");
+				let intersection = [];
+				$("a[class='sku_attr_value checked']").each(function () {
+					let skus = JSON.parse($(this).attr("skus"));
+					if (intersection.length === 0) {
+						intersection = skus;
+					} else {
+						intersection = intersection.filter(x => skus.includes(x))
+					}
+				});
+				console.log("intersection", intersection);
+				let notChecked = $(this).find("a[class='sku_attr_value']");
+				console.log("no", notChecked);
+				notChecked.each(function () {
+					let nc = JSON.parse($(this).attr("skus"));
+					if (!overlapping(intersection, nc)) {
+						$(this).disabled();
+					}
+				});
+				$(this).find(".sku_attr_value.checked.idx").removeClass("idx");
+			});
+		});
+
+		function overlapping(arr1, arr2) {
+			let overlapping = false;
+			$.each(arr1, function(index, obj) {
+				if ($.inArray(obj, arr2) > -1) {
+					overlapping = true;
+				}
+			});
+			return overlapping;
+		}
 	</script>
 
 </html>

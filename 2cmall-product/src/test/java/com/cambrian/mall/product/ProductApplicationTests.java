@@ -61,6 +61,8 @@ public class ProductApplicationTests {
 	public void listSaleAttrWithValueList() {
 		List<SkuItemSaleAttrVO> attrs = skuSaleAttrValueDao.selectSaleAttrWithValueListBySpuId(3L);
 		assertFalse(attrs.isEmpty());
+		assertFalse(attrs.get(0).getAttrValues().isEmpty());
+		assertFalse(attrs.get(0).getAttrValues().get(0).getSkus().isEmpty());
 		System.out.println(attrs);
 	}
 

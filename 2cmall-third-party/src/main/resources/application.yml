@@ -4,7 +4,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.0.198:8848
+        server-addr: 2cmall.com:8848
     alicloud:
       oss:
         bucket: 2cmall

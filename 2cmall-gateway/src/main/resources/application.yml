@@ -53,12 +53,12 @@ spring:
         - id: app_index_route
           uri: lb://2cmall-product
           predicates:
-            - Host=2cmall.com,mall.cambrian.com,item.2cmall.com
+            - Host=2cmall.com,item.2cmall.com
 
         - id: app_search_route
           uri: lb://2cmall-search
           predicates:
-            - Host=search.2cmall.com,search.mall.cambrian.com
+            - Host=search.2cmall.com
 
       # CORS 配置
       globalcors:

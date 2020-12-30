@@ -60,6 +60,11 @@ spring:
           predicates:
             - Host=search.2cmall.com
 
+        - id: app_auth_route
+          uri: lb://2cmall-auth-server
+          predicates:
+            - Host=auth.2cmall.com
+
       # CORS 配置
       globalcors:
         cors-configurations:

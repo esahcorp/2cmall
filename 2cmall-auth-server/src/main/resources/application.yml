@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: 2cmall-auth-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 2cmall.com:8848
+  thymeleaf:
+    cache: false
+server:
+  port: 41000

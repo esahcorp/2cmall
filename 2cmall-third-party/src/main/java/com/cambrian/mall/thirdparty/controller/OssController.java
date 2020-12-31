@@ -5,6 +5,7 @@ import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
 import com.cambrian.common.utils.R;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import java.util.Map;
 /**
  * @author kuma 2020-10-15
  */
+@Slf4j
 @RestController
 public class OssController {
 
@@ -60,10 +62,9 @@ public class OssController {
             respMap.put("dir", dir);
             respMap.put("host", host);
             respMap.put("expire", String.valueOf(expireEndTime / 1000));
-            // respMap.put("expire", formatISO8601Date(expiration));
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.warn("Oss exception: {}", e.getMessage());
         } finally {
             ossClient.shutdown();
         }

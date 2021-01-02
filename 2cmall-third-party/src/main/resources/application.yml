@@ -10,3 +10,11 @@ spring:
         bucket: 2cmall
 server:
   port: 30000
+mall:
+  third:
+    sms:
+      host: http://wwww.baidu.com
+      app-code: app-code
+      method: POST
+      sms-sign-id: xxxx
+      template-id: 1234

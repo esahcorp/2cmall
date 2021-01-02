@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FeignClient(name = "sms-api", url = "${mall.third.sms.host}")
 public interface SmsFeignService {
 
-    @GetMapping(value = "${mall.third.sms.path}:/")
+    @GetMapping(value = "${mall.third.sms.path:/}")
     String send();
 }

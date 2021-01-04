@@ -5,6 +5,9 @@ spring:
     nacos:
       discovery:
         server-addr: 2cmall.com:8848
+  redis:
+    host: 2cmall.com
+    port: 6379
   thymeleaf:
     cache: false
 server:

@@ -74,4 +74,8 @@ public class R extends HashMap<String, Object> {
 	public boolean isSuccess() {
 		return ((Integer) this.get("code")) == 0;
 	}
+
+	public String message() {
+		return (String) get("msg");
+	}
 }

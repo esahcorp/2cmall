@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 	<head>
 		<meta charset="utf-8" />
@@ -5009,46 +5009,54 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
 			</div>
 		</header>
 		<section>
-			<form action="" class="one">
+			<form action="/register" method="post" class="one">
+				<div class="tips" th:with="invalid = ${errors != null && #maps.containsKey(errors, 'msg')}"
+					 th:text="${invalid ? errors.msg: ''}" th:styleappend="${invalid} ? 'color: red':''">
+
+				</div>
 				<div class="register-box">
 					<label for="username" class="username_label">用 户 名
-			<input maxlength="20" type="text" placeholder="您的用户名和登录名" >
+						<input name="username" maxlength="20" type="text" placeholder="您的用户名和登录名">
+					</label>
+					<div class="tips" th:with="invalid = ${errors != null && #maps.containsKey(errors, 'username')}"
+						 th:text="${invalid ? errors.username: ''}" th:styleappend="${invalid} ? 'color: red':''">
+
+					</div>
+				</div>
+				<div class="register-box">
+					<label for="password" class="other_label">设 置 密 码
+						<input name="password" maxlength="20" type="password" placeholder="建议至少使用两种字符组合">
+					</label>
+					<div class="tips" th:with="invalid = ${errors != null && #maps.containsKey(errors, 'password')}"
+						 th:text="${invalid ? errors.password: ''}" th:styleappend="${invalid} ? 'color: red':''">
+
+					</div>
+				</div>
+				<div class="register-box">
+					<label for="username" class="other_label">确 认 密 码
+						<input maxlength="20" type="password" placeholder="请再次输入密码">
 					</label>
 					<div class="tips">
 
 					</div>
 				</div>
 				<div class="register-box">
-					<label for="username" class="other_label">设 置 密 码
-			<input maxlength="20" type="password" placeholder="建议至少使用两种字符组合">
-			</label>
-					<div class="tips">
+					<label for="phone" class="other_label">
+						<span>中国 0086∨</span>
+						<input name="phone" class="phone" id="phoneNum" maxlength="20" type="text" placeholder="建议使用常用手机">
+					</label>
+					<div class="tips" th:with="invalid = ${errors != null && #maps.containsKey(errors, 'phone')}"
+						 th:text="${invalid ? errors.phone: ''}" th:styleappend="${invalid} ? 'color: red':''">
 
 					</div>
 				</div>
 				<div class="register-box">
-					<label for="username" class="other_label">确 认 密 码
-			<input maxlength="20" type="password" placeholder="请再次输入密码">
-			</label>
-					<div class="tips">
-
-					</div>
-				</div>
-				<div class="register-box">
-					<label for="username" class="other_label">
-			<span>中国 0086∨</span>
-			<input class="phone" maxlength="20" type="text" placeholder="建议使用常用手机">
-			</label>
-					<div class="tips">
-
-					</div>
-				</div>
-				<div class="register-box">
-					<label for="username" class="other_label">验 证 码
-			<input maxlength="20" type="text" placeholder="请输入验证码" class="caa">
-			</label>
+					<label for="code" class="other_label">验 证 码
+						<input name="code" maxlength="20" type="text" placeholder="请输入验证码" class="caa">
+					</label>
 					<a id="sendCode"> 发送验证码 </a>
-					<div class="tips">
+					<div class="tips" th:with="invalid = ${errors != null && #maps.containsKey(errors, 'code')}"
+						 th:text="${invalid ? errors.code: ''}" th:styleappend="${invalid} ? 'color: red':''">
 
 					</div>
 				</div>
@@ -5059,7 +5067,7 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
 					<div class="tips">
 
 					</div>
-					<br />
+					<br/>
 					<div class="submit_btn">
 						<button type="submit" id="submit_btn">立 即 注 册</button>
 					</div>
@@ -5209,14 +5217,20 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
 					})
 					//	手机号
 				$('input').eq(3).blur(function() {
-						if($(this).val().length == 0) {
-							$(this).parent().next("div").text("");
-							$(this).parent().next("div").css("color", '#ccc');
-						} else if($(this).val().substr(0, 3) != 138 && $(this).val().substr(0, 3) != 189 && $(this).val().substr(0, 3) != 139 && $(this).val().substr(0, 3) != 158 && $(this).val().substr(0, 3) != 188 && $(this).val().substr(0, 3) != 157 || $(this).val().length != 11) {
-							$(this).parent().next("div").text("手机号格式不正确");
+						// if($(this).val().length == 0) {
+						// 	$(this).parent().next("div").text("");
+						// 	$(this).parent().next("div").css("color", '#ccc');
+						// } else if() {
+						// 	$(this).parent().next("div").text("手机号格式不正确");
+						// 	$(this).parent().next("div").css("color", 'red');
+						// } else {
+						// 	$(this).parent().next("div").text("");
+						// }
+						const re = /1[3-9][\w]{9}/;
+						const val = $(this).valueOf();
+						if (!re.test(val)) {
 							$(this).parent().next("div").css("color", 'red');
-						} else {
-							$(this).parent().next("div").text("");
+							$(this).parent().next("div").text("手机号格式不正确");
 						}
 					})
 					// 	验证码
@@ -5245,37 +5259,37 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
 						}
 					})
 					//	提交按钮
-				$("#submit_btn").click(function(e) {
-					for(var j = 0; j < 5; j++) {
-						if($('input').eq(j).val().length == 0) {
-							$('input').eq(j).focus();
-							if(j == 4) {
-								$('input').eq(j).parent().next().next("div").text("此处不能为空");
-								$('input').eq(j).parent().next().next("div").css("color", 'red');
-								e.preventDefault();
-								return;
-							}
-							$('input').eq(j).parent().next(".tips").text("此处不能为空");
-							$('input').eq(j).parent().next(".tips").css("color", 'red');
-							e.preventDefault();
-							return;
-						}
-					}
-					//协议
-					if($("#xieyi")[0].checked) {
-						//向变量stuList数组添加一个数值，数值内部格式Student(name,password,tel,id)
-						//发送用户信息
-						stuList.push(new Student($('input').eq(0).val(), $('input').eq(1).val(), $('input').eq(3).val(), stuList.length + 1));
-						localStorage.setItem('stuList', JSON.stringify(stuList));
-						alert("注册成功");
-						window.open("userlist.html", "_blank");
-					} else {
-						$("#xieyi").next().next().next(".tips").text("请勾选协议");
-						$("#xieyi").next().next().next(".tips").css("color", 'red');
-						e.preventDefault();
-						return;
-					}
-				})
+				// $("#submit_btn").click(function(e) {
+				// 	for(var j = 0; j < 5; j++) {
+				// 		if($('input').eq(j).val().length == 0) {
+				// 			$('input').eq(j).focus();
+				// 			if(j == 4) {
+				// 				$('input').eq(j).parent().next().next("div").text("此处不能为空");
+				// 				$('input').eq(j).parent().next().next("div").css("color", 'red');
+				// 				e.preventDefault();
+				// 				return;
+				// 			}
+				// 			$('input').eq(j).parent().next(".tips").text("此处不能为空");
+				// 			$('input').eq(j).parent().next(".tips").css("color", 'red');
+				// 			e.preventDefault();
+				// 			return;
+				// 		}
+				// 	}
+				// 	//协议
+				// 	if($("#xieyi")[0].checked) {
+				// 		//向变量stuList数组添加一个数值，数值内部格式Student(name,password,tel,id)
+				// 		//发送用户信息
+				// 		stuList.push(new Student($('input').eq(0).val(), $('input').eq(1).val(), $('input').eq(3).val(), stuList.length + 1));
+				// 		localStorage.setItem('stuList', JSON.stringify(stuList));
+				// 		alert("注册成功");
+				// 		window.open("userlist.html", "_blank");
+				// 	} else {
+				// 		$("#xieyi").next().next().next(".tips").text("请勾选协议");
+				// 		$("#xieyi").next().next().next(".tips").css("color", 'red');
+				// 		e.preventDefault();
+				// 		return;
+				// 	}
+				// })
 
 				//  建立构造函数，构造学生信息模板
 				function Student(name, password, tel, id) {
@@ -5305,8 +5319,15 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
 			$(function () {
 				$("#sendCode").click(function () {
 					if (!$(this).hasClass("disabled")) {
-						// 倒计时
-						timeoutChangeStyle(10);
+						// 调用发送验证码服务
+						const phoneNum = $("#phoneNum").val();
+						$.get("/sms/verification?phoneNumber=" + phoneNum, function (data) {
+							if (data.code !== 0) {
+								alert(data.msg);
+							}
+						});
+						// 页面进入倒计时
+						timeoutChangeStyle(60);
 					}
 				});
 			});

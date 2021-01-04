@@ -3,8 +3,10 @@ package com.cambrian.mall.member.controller;
 import com.cambrian.common.utils.PageUtils;
 import com.cambrian.common.utils.R;
 import com.cambrian.mall.member.entity.MemberEntity;
-import com.cambrian.mall.member.feign.CouponFeignService;
+import com.cambrian.mall.member.exception.PhoneExistException;
+import com.cambrian.mall.member.exception.UsernameExistException;
 import com.cambrian.mall.member.service.MemberService;
+import com.cambrian.mall.member.vo.MemberUserRegisterVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +19,6 @@ import java.util.Map;
  * 会员
  *
  * @author esahcorp
- * @email lostkite@outlook.com
  * @date 2020-09-29 17:23:15
  */
 @RestController
@@ -27,16 +28,16 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-    @Autowired
-    private CouponFeignService couponFeignService;
-
-    @GetMapping("/test")
-    public R test() {
-        MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setNickname("张三");
-
-        R r = couponFeignService.test();
-        return R.ok().put("member", memberEntity).put("coupon", r.get("coupon"));
+    @PostMapping("/register")
+    public R register(@RequestBody MemberUserRegisterVO registerVO) {
+        try {
+            memberService.register(registerVO);
+        } catch (UsernameExistException e) {
+            return R.error("用户名已存在");
+        } catch (PhoneExistException e) {
+            return R.error("手机号已注册");
+        }
+        return R.ok();
     }
 
     /**

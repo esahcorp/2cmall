@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface MemberDao extends BaseMapper<MemberEntity> {
 
-    int checkPhoneUnique(@Param("phone") String phone);
+    Integer checkPhoneUnique(@Param("phone") String phone);
 
-    int checkUsernameUnique(@Param("username") String username);
+    Integer checkUsernameUnique(@Param("username") String username);
 }

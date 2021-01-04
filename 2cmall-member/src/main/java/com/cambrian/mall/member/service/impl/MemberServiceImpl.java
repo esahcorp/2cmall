@@ -57,16 +57,16 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
 
     @Override
     public void checkPhoneUnique(String phone) {
-        int exist = this.baseMapper.checkPhoneUnique(phone);
-        if (exist != 1) {
+        Integer exist = this.baseMapper.checkPhoneUnique(phone);
+        if (null != exist) {
             throw new PhoneExistException();
         }
     }
 
     @Override
     public void checkUsernameUnique(String username) {
-        int exist = this.baseMapper.checkUsernameUnique(username);
-        if (exist != 1) {
+        Integer exist = this.baseMapper.checkUsernameUnique(username);
+        if (null != exist) {
             throw new UsernameExistException();
         }
     }

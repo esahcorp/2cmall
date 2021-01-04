@@ -6,7 +6,10 @@ import com.cambrian.mall.member.entity.MemberEntity;
 import com.cambrian.mall.member.exception.PhoneExistException;
 import com.cambrian.mall.member.exception.UsernameExistException;
 import com.cambrian.mall.member.vo.MemberUserRegisterVO;
+import com.cambrian.mall.member.vo.MemberUserSigninVO;
 
+import javax.security.auth.login.AccountNotFoundException;
+import javax.security.auth.login.FailedLoginException;
 import java.util.Map;
 
 /**
@@ -24,5 +27,7 @@ public interface MemberService extends IService<MemberEntity> {
     void checkUsernameUnique(String username) throws UsernameExistException;
 
     void checkPhoneUnique(String phone) throws PhoneExistException;
+
+    void signin(MemberUserSigninVO vo) throws AccountNotFoundException, FailedLoginException;
 }
 

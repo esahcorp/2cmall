@@ -12,9 +12,12 @@ import com.cambrian.mall.member.exception.UsernameExistException;
 import com.cambrian.mall.member.exception.PhoneExistException;
 import com.cambrian.mall.member.service.MemberService;
 import com.cambrian.mall.member.vo.MemberUserRegisterVO;
+import com.cambrian.mall.member.vo.MemberUserSigninVO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.AccountNotFoundException;
+import javax.security.auth.login.FailedLoginException;
 import java.util.Map;
 
 
@@ -60,6 +63,21 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         Integer exist = this.baseMapper.checkPhoneUnique(phone);
         if (null != exist) {
             throw new PhoneExistException();
+        }
+    }
+
+    @Override
+    public void signin(MemberUserSigninVO vo) throws AccountNotFoundException, FailedLoginException {
+        MemberEntity entity = this.getOne(
+                new QueryWrapper<MemberEntity>().eq("username", vo.getAccount())
+                        .or().eq("mobile", vo.getAccount()));
+        if (entity == null) {
+            throw new AccountNotFoundException();
+        }
+        String passwordCrypt = entity.getPassword();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (!passwordEncoder.matches(vo.getPassword(), passwordCrypt)) {
+            throw new FailedLoginException();
         }
     }
 

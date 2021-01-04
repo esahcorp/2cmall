@@ -7,9 +7,12 @@ import com.cambrian.mall.member.exception.PhoneExistException;
 import com.cambrian.mall.member.exception.UsernameExistException;
 import com.cambrian.mall.member.service.MemberService;
 import com.cambrian.mall.member.vo.MemberUserRegisterVO;
+import com.cambrian.mall.member.vo.MemberUserSigninVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.AccountNotFoundException;
+import javax.security.auth.login.FailedLoginException;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -36,6 +39,16 @@ public class MemberController {
             return R.error("用户名已存在");
         } catch (PhoneExistException e) {
             return R.error("手机号已注册");
+        }
+        return R.ok();
+    }
+
+    @PostMapping("/signin")
+    public R signin(@RequestBody MemberUserSigninVO vo) {
+        try {
+            memberService.signin(vo);
+        } catch (AccountNotFoundException | FailedLoginException e) {
+            return R.error("用户名或密码错误");
         }
         return R.ok();
     }

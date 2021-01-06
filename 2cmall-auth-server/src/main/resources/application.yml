@@ -12,3 +12,6 @@ spring:
     cache: false
 server:
   port: 41000
+logging:
+  level:
+    org.springframework.web.client: debug

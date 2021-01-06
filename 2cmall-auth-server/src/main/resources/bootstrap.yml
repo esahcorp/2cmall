@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: 2cmall-auth-server
+  cloud:
+    nacos:
+      config:
+        server-addr: 2cmall.com:8848
+        namespace: 2cmall-auth-namespace
+        ext-config:
+          - dataId: weibo-oauth2.yml
+            group: dev
+            refresh: true

@@ -1,6 +1,7 @@
 package com.cambrian.mall.auth.feign;
 
 import com.cambrian.common.utils.R;
+import com.cambrian.mall.auth.to.WeiboAccessTokenDTO;
 import com.cambrian.mall.auth.vo.UserRegisterVO;
 import com.cambrian.mall.auth.vo.UserSigninVO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -18,4 +19,7 @@ public interface MemberFeignService {
 
     @PostMapping("/signin")
     R signin(@RequestBody UserSigninVO vo);
+
+    @PostMapping("/oauth2/signin")
+    R oauth2Signin(@RequestBody WeiboAccessTokenDTO accessToken);
 }

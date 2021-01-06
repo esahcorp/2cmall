@@ -6,8 +6,9 @@ import com.cambrian.mall.member.entity.MemberEntity;
 import com.cambrian.mall.member.exception.PhoneExistException;
 import com.cambrian.mall.member.exception.UsernameExistException;
 import com.cambrian.mall.member.service.MemberService;
-import com.cambrian.mall.member.vo.MemberUserRegisterVO;
-import com.cambrian.mall.member.vo.MemberUserSigninVO;
+import com.cambrian.mall.member.to.MemberUserRegisterDTO;
+import com.cambrian.mall.member.to.MemberUserSigninDTO;
+import com.cambrian.mall.member.to.WeiboAccessTokenDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping("/register")
-    public R register(@RequestBody MemberUserRegisterVO registerVO) {
+    public R register(@RequestBody MemberUserRegisterDTO registerVO) {
         try {
             memberService.register(registerVO);
         } catch (UsernameExistException e) {
@@ -44,13 +45,23 @@ public class MemberController {
     }
 
     @PostMapping("/signin")
-    public R signin(@RequestBody MemberUserSigninVO vo) {
+    public R signin(@RequestBody MemberUserSigninDTO vo) {
         try {
-            memberService.signin(vo);
+            MemberEntity signin = memberService.signin(vo);
+            return R.ok().put("user", signin);
         } catch (AccountNotFoundException | FailedLoginException e) {
             return R.error("用户名或密码错误");
         }
-        return R.ok();
+    }
+
+    @PostMapping("oauth2/signin")
+    public R oauth2Signin(@RequestBody WeiboAccessTokenDTO accessToken) {
+        try {
+            MemberEntity memberEntity = memberService.accessSocialUser(accessToken);
+            return R.ok().put("social_user", memberEntity);
+        } catch (Exception e) {
+            return R.error("获取社交账户失败");
+        }
     }
 
     /**
@@ -58,7 +69,8 @@ public class MemberController {
      */
     @RequestMapping("/list")
     // @RequiresPermissions("member:member:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
+
         PageUtils page = memberService.queryPage(params);
 
         return R.ok().put("page", page);

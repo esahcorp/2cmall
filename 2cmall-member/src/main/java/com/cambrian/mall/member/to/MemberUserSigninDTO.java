@@ -1,4 +1,4 @@
-package com.cambrian.mall.member.vo;
+package com.cambrian.mall.member.to;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import lombok.Data;
  * @author kuma 2021-01-04
  */
 @Data
-public class MemberUserSigninVO {
+public class MemberUserSigninDTO {
 
     private String account;
     private String password;

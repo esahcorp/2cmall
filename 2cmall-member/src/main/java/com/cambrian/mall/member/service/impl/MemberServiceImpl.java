@@ -8,11 +8,14 @@ import com.cambrian.common.utils.Query;
 import com.cambrian.mall.member.dao.MemberDao;
 import com.cambrian.mall.member.dao.MemberLevelDao;
 import com.cambrian.mall.member.entity.MemberEntity;
-import com.cambrian.mall.member.exception.UsernameExistException;
 import com.cambrian.mall.member.exception.PhoneExistException;
+import com.cambrian.mall.member.exception.UsernameExistException;
+import com.cambrian.mall.member.feign.WeiboFeignService;
 import com.cambrian.mall.member.service.MemberService;
-import com.cambrian.mall.member.vo.MemberUserRegisterVO;
-import com.cambrian.mall.member.vo.MemberUserSigninVO;
+import com.cambrian.mall.member.to.MemberUserRegisterDTO;
+import com.cambrian.mall.member.to.MemberUserSigninDTO;
+import com.cambrian.mall.member.to.WeiboAccessTokenDTO;
+import lombok.val;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +28,11 @@ import java.util.Map;
 public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> implements MemberService {
 
     private final MemberLevelDao memberLevelDao;
+    private final WeiboFeignService weiboClient;
 
-    public MemberServiceImpl(MemberLevelDao memberLevelDao) {
+    public MemberServiceImpl(MemberLevelDao memberLevelDao, WeiboFeignService weiboClient) {
         this.memberLevelDao = memberLevelDao;
+        this.weiboClient = weiboClient;
     }
 
     @Override
@@ -41,7 +46,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
     }
 
     @Override
-    public void register(MemberUserRegisterVO registerVO) {
+    public void register(MemberUserRegisterDTO registerVO) {
         MemberEntity memberEntity = new MemberEntity();
         // 1. 检查唯一性
         checkUsernameUnique(registerVO.getUsername());
@@ -67,7 +72,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
     }
 
     @Override
-    public void signin(MemberUserSigninVO vo) throws AccountNotFoundException, FailedLoginException {
+    public MemberEntity signin(MemberUserSigninDTO vo) throws AccountNotFoundException, FailedLoginException {
         MemberEntity entity = this.getOne(
                 new QueryWrapper<MemberEntity>().eq("username", vo.getAccount())
                         .or().eq("mobile", vo.getAccount()));
@@ -79,6 +84,46 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         if (!passwordEncoder.matches(vo.getPassword(), passwordCrypt)) {
             throw new FailedLoginException();
         }
+        return entity;
+    }
+
+    @Override
+    public MemberEntity accessSocialUser(WeiboAccessTokenDTO accessToken) {
+        val socialUser = this.getOne(new QueryWrapper<MemberEntity>().eq("social_uid", accessToken.getUid()));
+        if (socialUser != null) {
+            // 不是第一次登录，更新 token 和 过期时间
+            val update = new MemberEntity();
+            update.setId(socialUser.getId());
+            update.setAccessToken(accessToken.getAccessToken());
+            update.setExpiresIn(accessToken.getExpiresIn());
+            this.updateById(socialUser);
+
+            socialUser.setAccessToken(accessToken.getAccessToken());
+            socialUser.setExpiresIn(accessToken.getExpiresIn());
+            return socialUser;
+        }
+        // 第一次登录系统，注册新的用户信息
+        return createSocialUser(accessToken);
+    }
+
+    @Override
+    public MemberEntity createSocialUser(WeiboAccessTokenDTO accessToken) {
+        // 调用 api 获取用户信息
+        val token = accessToken.getAccessToken();
+        val uid = accessToken.getUid();
+        MemberEntity memberEntity;
+        try {
+            val socialUser = weiboClient.showUser(token, uid);
+            memberEntity = socialUser.transToMember();
+        } catch (Exception e) {
+            memberEntity = new MemberEntity();
+        }
+        memberEntity.setLevelId(memberLevelDao.getDefaultLevelId());
+        memberEntity.setAccessToken(token);
+        memberEntity.setSocialUid(uid);
+        memberEntity.setExpiresIn(accessToken.getExpiresIn());
+        this.save(memberEntity);
+        return memberEntity;
     }
 
     @Override

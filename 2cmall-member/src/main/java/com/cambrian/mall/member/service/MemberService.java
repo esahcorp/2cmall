@@ -5,8 +5,9 @@ import com.cambrian.common.utils.PageUtils;
 import com.cambrian.mall.member.entity.MemberEntity;
 import com.cambrian.mall.member.exception.PhoneExistException;
 import com.cambrian.mall.member.exception.UsernameExistException;
-import com.cambrian.mall.member.vo.MemberUserRegisterVO;
-import com.cambrian.mall.member.vo.MemberUserSigninVO;
+import com.cambrian.mall.member.to.MemberUserRegisterDTO;
+import com.cambrian.mall.member.to.MemberUserSigninDTO;
+import com.cambrian.mall.member.to.WeiboAccessTokenDTO;
 
 import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.FailedLoginException;
@@ -22,12 +23,16 @@ public interface MemberService extends IService<MemberEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    void register(MemberUserRegisterVO registerVO);
+    void register(MemberUserRegisterDTO registerVO);
 
     void checkUsernameUnique(String username) throws UsernameExistException;
 
     void checkPhoneUnique(String phone) throws PhoneExistException;
 
-    void signin(MemberUserSigninVO vo) throws AccountNotFoundException, FailedLoginException;
+    MemberEntity signin(MemberUserSigninDTO vo) throws AccountNotFoundException, FailedLoginException;
+
+    MemberEntity accessSocialUser(WeiboAccessTokenDTO accessToken);
+
+    MemberEntity createSocialUser(WeiboAccessTokenDTO accessToken);
 }
 

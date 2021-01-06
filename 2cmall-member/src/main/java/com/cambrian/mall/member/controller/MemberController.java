@@ -54,7 +54,7 @@ public class MemberController {
         }
     }
 
-    @PostMapping("oauth2/signin")
+    @PostMapping("/oauth2/signin")
     public R oauth2Signin(@RequestBody WeiboAccessTokenDTO accessToken) {
         try {
             MemberEntity memberEntity = memberService.accessSocialUser(accessToken);

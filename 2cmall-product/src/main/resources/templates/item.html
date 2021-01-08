@@ -56,9 +56,14 @@
 								</ol>
 							</li>
 						</ul>
-						<ul class="header_ul_right">
-							<li style="border: 0;"><a href="http://auth.2cmall.com/signin.html" class="aa">你好，请登录</a></li>
-							<li><a href="http://auth.2cmall.com/register.html" style="color: red;">免费注册</a> |</li>
+						<ul class="header_ul_right" th:with="login=${session.loginUser!=null}">
+							<li style="width: 150px">
+								<a th:if="${login}">欢迎，[[${session.loginUser.username}]]</a>
+								<a th:if="${!login}" href="http://auth.2cmall.com/signin.html">你好，请登录</a>
+							</li>
+							<li>
+								<a href="http://auth.2cmall.com/register.html" class="li_2" th:if="${!login}">免费注册</a>
+							</li>
 							<li><a href="javascript:;" class="aa">我的订单</a> |</li>
 							<li class="jingdong"><a href="javascript:;">我的京东</a><span class="glyphicon glyphicon-menu-down">|</span>
 								<ol class="jingdong_ol">

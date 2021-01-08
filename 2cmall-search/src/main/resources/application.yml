@@ -8,8 +8,13 @@ spring:
   elasticsearch:
     rest:
       uris: http://2cmall.com:9200
+  redis:
+    host: 2cmall.com
+    port: 6379
   thymeleaf:
     cache: false
+  session:
+    store-type: redis
 server:
   port: 40000
 logging:

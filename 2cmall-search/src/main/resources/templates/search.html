@@ -62,12 +62,13 @@
                 <a href="#">海外</a>
             </div>
         </b>
-        <ul>
+        <ul th:with="login=${session.loginUser!=null}">
             <li>
-                <a href="http://auth.2cmall.com/signin.html" class="li_2">你好，请登录</a>
+                <a th:if="${login}">欢迎，[[${session.loginUser.username}]]</a>
+                <a th:if="${!login}" href="http://auth.2cmall.com/signin.html">你好，请登录</a>
             </li>
             <li>
-                <a href="http://auth.2cmall.com/register.html">免费注册</a>
+                <a href="http://auth.2cmall.com/register.html" class="li_2" th:if="${!login}">免费注册</a>
             </li>
             <span>|</span>
             <li>

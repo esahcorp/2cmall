@@ -14,4 +14,6 @@ public class AuthServerConstants {
 
         public static final String VERIFICATION_PREFIX = SERVICE_CODE + ":verifi:";
     }
+
+    public static final String SESSION_KEY_LOGIN_USER = "loginUser";
 }

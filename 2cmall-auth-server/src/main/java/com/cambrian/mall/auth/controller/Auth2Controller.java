@@ -1,5 +1,8 @@
 package com.cambrian.mall.auth.controller;
 
+import com.alibaba.fastjson.TypeReference;
+import com.cambrian.common.constant.AuthServerConstants;
+import com.cambrian.common.to.MemberEntityDTO;
 import com.cambrian.mall.auth.config.WeiboOAuth2Properties;
 import com.cambrian.mall.auth.feign.MemberFeignService;
 import com.cambrian.mall.auth.to.WeiboAccessTokenDTO;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * @author kuma 2021-01-04
@@ -31,7 +36,7 @@ public class Auth2Controller {
     }
 
     @GetMapping("/weibo/success")
-    public String webbo(@RequestParam("code") String code) {
+    public String webbo(@RequestParam("code") String code, HttpSession session) {
         // 1. 获取 access token
         val param = weiboOAuth2Properties.buildTokenParam(code);
         val header = new HttpHeaders();
@@ -49,12 +54,14 @@ public class Auth2Controller {
             if (!result.isSuccess()) {
                 return "redirect:http://auth.2cmall.com/signin.html";
             }
+            MemberEntityDTO user = result.get("social_user", new TypeReference<MemberEntityDTO>() {
+            });
+            session.setAttribute(AuthServerConstants.SESSION_KEY_LOGIN_USER, user);
+            // 3. 跳回首页
+            return "redirect:http://2cmall.com";
         } catch (Exception e) {
             return "redirect:http://auth.2cmall.com/signin.html";
         }
-
-        // 3. 跳回首页
-        return "redirect:http://2cmall.com";
     }
 
 
